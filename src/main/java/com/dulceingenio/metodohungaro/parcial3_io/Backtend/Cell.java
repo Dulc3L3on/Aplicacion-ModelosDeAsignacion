@@ -32,8 +32,7 @@ public class Cell extends JPanel{
         campoTexto = new JTextField(contenido);        
         campoTexto.setBackground(new Color(229,230,232));            
         campoTexto.setPreferredSize(new Dimension(95, 95));
-        campoTexto.setFont(new Font("Ubuntu", Font.PLAIN, 18));                  
-        campoTexto.setVisible(true);
+        campoTexto.setFont(new Font("Ubuntu", Font.PLAIN, 18));                          
         
         if(!edicionHabilitada){
             campoTexto.setEditable(false);         

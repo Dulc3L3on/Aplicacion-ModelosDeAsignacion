@@ -59,6 +59,8 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         jpn_nombresCampos.setBackground(new java.awt.Color(229, 230, 232));
 
         scrollP_listAsignaciones.setBackground(new java.awt.Color(229, 230, 232));
+        scrollP_listAsignaciones.setHorizontalScrollBarPolicy(javax.swing.ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollP_listAsignaciones.setViewportView(JP_listAsignaciones);
 
         JP_listAsignaciones.setBackground(new java.awt.Color(229, 230, 232));
         JP_listAsignaciones.setBorder(null);
@@ -156,6 +158,8 @@ public class JPn_Paso1 extends javax.swing.JPanel {
 
         scrollPane_TablaDatos.setBackground(new java.awt.Color(250, 252, 254));
         scrollPane_TablaDatos.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(216, 226, 228)));
+        scrollPane_TablaDatos.setAutoscrolls(true);
+        scrollPane_TablaDatos.setViewportView(null);
 
         cbBox_tipoOperacion.setFont(new java.awt.Font("Ubuntu", 0, 17)); // NOI18N
         cbBox_tipoOperacion.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Maximización", "MInimización" }));
@@ -225,24 +229,25 @@ public class JPn_Paso1 extends javax.swing.JPanel {
     private void spn_numAsignacionesStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spn_numAsignacionesStateChanged
         if((Integer)spn_numAsignaciones.getValue() > cantidadAsignacionesPrevia){
             manejadorTabla.cambiarTamanioTabla(true, false);
+            manejadorListas.cambiarTamanioLista(true, true);
         }else{
             manejadorTabla.cambiarTamanioTabla(false, false);
+            manejadorListas.cambiarTamanioLista(false, true);
         }       
 
-        cantidadAsignacionesPrevia = (Integer) spn_numAsignaciones.getValue();
-        
-        scrollPane_TablaDatos.repaint();
+        cantidadAsignacionesPrevia = (Integer) spn_numAsignaciones.getValue();            
     }//GEN-LAST:event_spn_numAsignacionesStateChanged
 
     private void spn_numCandidatosStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_spn_numCandidatosStateChanged
         if((Integer)spn_numCandidatos.getValue() > cantidadCandidatosPrevia){
             manejadorTabla.cambiarTamanioTabla(true, true);
+            manejadorListas.cambiarTamanioLista(true, false);
         }else{
             manejadorTabla.cambiarTamanioTabla(false, true);
+            manejadorListas.cambiarTamanioLista(false, false);
         }       
 
-        cantidadCandidatosPrevia = (Integer) spn_numCandidatos.getValue();
-        scrollPane_TablaDatos.repaint();
+        cantidadCandidatosPrevia = (Integer) spn_numCandidatos.getValue();                
     }//GEN-LAST:event_spn_numCandidatosStateChanged
 
 

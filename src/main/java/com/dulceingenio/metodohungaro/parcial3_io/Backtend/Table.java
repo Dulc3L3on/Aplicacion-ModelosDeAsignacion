@@ -6,6 +6,7 @@
 package com.dulceingenio.metodohungaro.parcial3_io.Backtend;
 
 import java.util.ArrayList;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 /**
@@ -13,19 +14,19 @@ import javax.swing.JScrollPane;
  * @author phily
  */
 public class Table {
-    private final JScrollPane contenedorTabla;
+    private final JScrollPane scrollContenedor;    
+    private JPanel contenedorTabla = new JPanel();
     private ArrayList<ArrayList<Cell>> listaDeListasCeldas;//aquí se add las listas de las filas
     private ArrayList<Cell> filaDeHeaders;
     private int identificadorFilas = 1;
     private int identificadorColumnas = 65;
     
     public Table(JScrollPane elContenedorTabla, int numFilasIniciales, int numColumnasIniciales){//Aquí como en la lista, se inicializará la tabla; el tipo de dato de fila y columna no es ncesario colocarlo, para evitar un amontonamiento xD
-        contenedorTabla = elContenedorTabla;
+        scrollContenedor = elContenedorTabla;                
         listaDeListasCeldas = new ArrayList<>();
         
         filaDeHeaders = new ArrayList<>();
-        filaDeHeaders.add(new Cell("", 3, false));//se add la celda donde debería aparecer el tipo de datos que habrán en la tabla xD (pero para evitar redundancia no lo hará xD)
-        filaDeHeaders.get(0).desabilitarEdicion();
+        filaDeHeaders.add(new Cell("", 3, false));//se add la celda donde debería aparecer el tipo de datos que habrán en la tabla xD (pero para evitar redundancia no lo hará xD)        
         
         listaDeListasCeldas.add(filaDeHeaders);//Se crear la fila en la que aparecerán los encabezados de columnas...                   
         
@@ -106,7 +107,7 @@ public class Table {
     }
     
     public void actualizarTabla(){
-        contenedorTabla.removeAll();
+        scrollContenedor.removeAll();//solo que aquí tb se remueve el viewport... por eso es que baja 104 espacios en Y... lo que debería hacerse es un contenedorTabla.getViwePort.removeAll()
         int size;
         ArrayList<Cell> listaFilaActual;
         
@@ -116,12 +117,13 @@ public class Table {
             
             for (int celdaActual = 0; celdaActual < size; celdaActual++) {
                 Cell celda = listaFilaActual.get(celdaActual);
-                contenedorTabla.add(celda);
-                celda.setLocation(celda.getWidth()*celdaActual, contenedorTabla.getY()+ (celda.getHeight()*filaActual));
+                scrollContenedor.add(celda);
+                celda.setLocation(celda.getWidth()*celdaActual, /*contenedorTabla.getY()+*/(celda.getHeight()*filaActual));//el cambio de posición en Y del contenedor, es porque el viewport se eli al hacer removeALl y no getViewport.removeAll(), y eso último no lo hice porque al final de cuentas el cotenendor baja los 104 y además de eso, solo se muestra la fila más reciente .-.
                 celda.setVisible(true);
+                
+                scrollContenedor.updateUI();
             }
-        }
-        
+        }                        
     }
     
     public String[][] darInfo(){//la dará por lista, desde el primero al último ele de ella, excluyendo los headers... xD

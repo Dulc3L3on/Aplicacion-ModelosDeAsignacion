@@ -45,7 +45,18 @@ public class List {
         actualizarElementosContenedor(false);
     }
     
-    public void addElemento(String contenidoCampo, boolean esAsignacion){               
+    public void cambiarTamanioLista(boolean esAumento, boolean esAsignacion){
+        if(esAumento){
+           addElemento(((esAsignacion)?"Asignación":"Candidato") + " #"+((esAsignacion)?listadoAsignaciones.size()+1:identificadorFilas), esAsignacion);           
+        }else{
+            eliminarElemento(esAsignacion);
+        }
+        
+        actualizarElementosContenedor(esAsignacion);
+    }
+    
+    
+    private void addElemento(String contenidoCampo, boolean esAsignacion){               
         if(esAsignacion){                                        
             listadoAsignaciones.add(new ElementList(String.valueOf((char)identificadorColumnas), contenidoCampo));
             identificadorColumnas++;                       
@@ -55,7 +66,7 @@ public class List {
         }
     }
     
-    public void actualizarElementosContenedor(boolean actualizarAsignaciones){
+    private void actualizarElementosContenedor(boolean actualizarAsignaciones){
         if(actualizarAsignaciones){
             contenedorListaAsignaciones.removeAll();
             
@@ -65,6 +76,8 @@ public class List {
                 elemento.setLocation(0, contenedorListaAsignaciones.getY()+ (elemento.getHeight()*elementoActual));
                 elemento.setVisible(true);
             }            
+            
+            contenedorListaAsignaciones.updateUI();
         }else{
             contenedorListaCandidatos.removeAll();
             
@@ -72,22 +85,22 @@ public class List {
                 ElementList elemento = listadoCandidatos.get(elementoActual);                
                 contenedorListaCandidatos.add(elemento);
                 elemento.setLocation(0, contenedorListaCandidatos.getY()+ (elemento.getHeight()*elementoActual));
-            }                              
+                elemento.setVisible(true);
+            }                             
+            
+            contenedorListaCandidatos.updateUI();
         }               
     }
     
-    public void eliminarElemento(boolean esDeAsignacion){//si te da tiempo, add el parám índice, para eliminar el que corresp...
+    private void eliminarElemento(boolean esDeAsignacion){//si te da tiempo, add el parám índice, para eliminar el que corresp...
         if(esDeAsignacion){
             listadoAsignaciones.remove(listadoAsignaciones.size()-1);
             
             //tendría que hacerse otro método para actualizar los elementos en el caso de la eliminación en cualquier parte, 
-            //puesto que en ese método se tendría que hacer la respectiva resta del identificador de la col o fila, según corresp...
-            actualizarElementosContenedor(true);
+            //puesto que en ese método se tendría que hacer la respectiva resta del identificador de la col o fila, según corresp...            
             identificadorColumnas--;
         }else{
-            listadoCandidatos.remove(listadoCandidatos.size()-1);
-            
-            actualizarElementosContenedor(false);
+            listadoCandidatos.remove(listadoCandidatos.size()-1);                       
             identificadorFilas--;
         }                
     }
