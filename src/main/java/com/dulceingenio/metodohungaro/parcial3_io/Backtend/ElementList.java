@@ -29,7 +29,7 @@ public class ElementList extends JPanel{
     }
     
     private void prepararElemento(String identificador, String nombreCampo){        
-        this.setSize(235, 65);              
+        this.setSize(242, 65);              
         this.setLayout(new FlowLayout(FlowLayout.LEADING,4,3));
         this.setBackground(new Color(229,230,232));
         
@@ -41,11 +41,11 @@ public class ElementList extends JPanel{
         labelIdentificador.setFont(new Font("Ubuntu", Font.PLAIN, 18));                      
         
         campoNombre = new JTextField(nombreCampo);
-        campoNombre.setPreferredSize(new Dimension(180, 37));        
+        campoNombre.setPreferredSize(new Dimension(195, 37));        
         campoNombre.setFont(new Font("Ubuntu", Font.PLAIN, 18));
         
         this.add(labelIdentificador);
-        this.add(campoNombre);                    
+        this.add(campoNombre);            
     }
     
     public void resetFieldName(String newName){               

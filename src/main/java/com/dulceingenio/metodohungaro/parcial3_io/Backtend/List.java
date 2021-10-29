@@ -5,6 +5,7 @@
  */
 package com.dulceingenio.metodohungaro.parcial3_io.Backtend;
 
+import java.awt.Dimension;
 import java.util.ArrayList;
 import javax.swing.JPanel;
 
@@ -19,6 +20,7 @@ public class List {
     private final JPanel contenedorListaAsignaciones;
     private int identificadorFilas = 1;
     private int identificadorColumnas = 65;
+    private int alturaContenedorAsignaciones = 550, alturaContenedorCandidatos = 550;
     
     
     public List(JPanel elContenedorListaCandidatos, JPanel elContenedorListaAsignaciones, int numColumnasIniciales, int numFilasIniciales){
@@ -50,20 +52,22 @@ public class List {
            addElemento(((esAsignacion)?"Asignación":"Candidato") + " #"+((esAsignacion)?listadoAsignaciones.size()+1:identificadorFilas), esAsignacion);           
         }else{
             eliminarElemento(esAsignacion);
-        }
+        }               
         
-        actualizarElementosContenedor(esAsignacion);
+        ajustarScrollBars(esAsignacion, esAumento);
+        actualizarElementosContenedor(esAsignacion);        
+        System.out.println(contenedorListaAsignaciones.getSize());
     }
     
     
     private void addElemento(String contenidoCampo, boolean esAsignacion){               
         if(esAsignacion){                                        
             listadoAsignaciones.add(new ElementList(String.valueOf((char)identificadorColumnas), contenidoCampo));
-            identificadorColumnas++;                       
+            identificadorColumnas++;                                            
         }else{
             listadoCandidatos.add(new ElementList(String.valueOf(identificadorFilas), contenidoCampo));
             identificadorFilas++;
-        }
+        }               
     }
     
     private void actualizarElementosContenedor(boolean actualizarAsignaciones){
@@ -75,7 +79,7 @@ public class List {
                 contenedorListaAsignaciones.add(elemento);
                 elemento.setLocation(0, contenedorListaAsignaciones.getY()+ (elemento.getHeight()*elementoActual));
                 elemento.setVisible(true);
-            }            
+            }                                   
             
             contenedorListaAsignaciones.updateUI();
         }else{
@@ -105,6 +109,18 @@ public class List {
         }                
     }
     
-    
+    private void ajustarScrollBars(boolean esAsignacion, boolean esAumento){
+        if(esAsignacion){            
+            if(listadoAsignaciones.size()>6){
+                alturaContenedorAsignaciones += (esAumento)?+65:-65;
+                contenedorListaAsignaciones.setPreferredSize(new Dimension(contenedorListaAsignaciones.getWidth(), alturaContenedorAsignaciones));
+            }                      
+        }else{
+            if(listadoCandidatos.size()>6){
+                alturaContenedorCandidatos += (esAumento)?+65:-65;
+                contenedorListaCandidatos.setPreferredSize(new Dimension(contenedorListaCandidatos.getWidth(), alturaContenedorCandidatos));
+            }//hay un pequeño bug con los tamaños, pero es de java :v o netbeans xD, porque tu tienes todo bien xD
+        }       
+    }
     
 }
