@@ -34,79 +34,92 @@ public class Table {
         System.out.println("tabla inicializada");
     }
     
-    private void inicializarTabla(int numFilasIniciales, int numColumIniciales){
-        for (int filaActual = 0; filaActual < numFilasIniciales; filaActual++) {//para add las filas
-            addRow();
-        }
-        
-        for (int columnaActual = 0; columnaActual < numColumIniciales; columnaActual++) {
-            addColumn();
-        }
+    private void inicializarTabla(int numFilasIniciales, int numColumIniciales){        
+        addRow(numFilasIniciales);                      
+        addColumn(numColumIniciales);        
         
         actualizarTabla();
     }
     
-    public void cambiarTamanioTabla(boolean esAumentar, boolean enFilas){
+    public void cambiarTamanioTabla(boolean esAumentar, boolean enFilas, int numeroLimite){//el número límite corresponderá al lugar del tipo de cb...
         if(esAumentar){
             if(enFilas){
-                addRow();
+                addRow(numeroLimite);
             }else{
-                addColumn();
+                addColumn(numeroLimite);
             }
         }else{
             if(enFilas){
-                deleteRow();
+                deleteRow(numeroLimite);
             }else{
-                deleteColumn();
+                deleteColumn(numeroLimite);
             }
-        }               
+        }                       
         
-        activarScrollBars(esAumentar, enFilas);
         actualizarTabla();
         System.out.println("Dimensiones tabla -> " + contenedorTabla.getSize());
     }
     
-    private void addRow(){   
-        /*Esto solo establece como "el limite" inicial de elementos, no add eleemntos a la lista [dicha add podría hacerla el método, pero no es su objetivo...]
-        ArrayList<Cell> nuevaFila = new ArrayList<>(filaDeHeaders.size());//creo que sale mejor, puesto que al hacer esto se evita usar más de una vez el método get de la lista ;v xD
-        listaDeListasCeldas.add(nuevaFila);        
-        */
+    private void addRow(int indiceLlegada){            
+        System.out.println("agregación (tam inicial) -> "+ listaDeListasCeldas.size());
         
-        ArrayList<Cell> nuevaFila = new ArrayList<>();
-        //Se add el header correspondiente de la nueva fila
-        nuevaFila.add(new Cell(String.valueOf(identificadorFilas), 1, false));        
-        identificadorFilas++;
+        do{
+            ArrayList<Cell> nuevaFila = new ArrayList<>();
+            //Se add el header correspondiente de la nueva fila
+            nuevaFila.add(new Cell(String.valueOf(identificadorFilas), 1, false));        
+            identificadorFilas++;
+            
+            for (int celdaActual = 1; celdaActual < filaDeHeaders.size(); celdaActual++) {//< porque el primer ele de la fila es para el header de la misma
+                nuevaFila.add(new Cell("", 0, true));
+            }                        
         
-        for (int celdaActual = 1; celdaActual < filaDeHeaders.size(); celdaActual++) {//< porque el primer ele de la fila es para el header de la misma
-            nuevaFila.add(new Cell("", 0, true));
-        }                        
+            listaDeListasCeldas.add(nuevaFila);                            
+            activarScrollBars(true, true);
+        }while(listaDeListasCeldas.size()<= indiceLlegada);//Es <= puesto que realmente se tiene una fila de más por la existencia de los encabezados de columna...
         
-        listaDeListasCeldas.add(nuevaFila);        
-    }    
+        System.out.println("indice llegada -> "+ indiceLlegada+"\n");                
+    }//Terminado    
     
-    private void addColumn(){
+    private void addColumn(int indiceLlegada){        
+        int numeroColumnasNuevas = indiceLlegada -filaDeHeaders.size()+1;
+        
         //se add el header correspondiente de la nueva columna
-        filaDeHeaders.add(new Cell(String.valueOf((char)identificadorColumnas), 2, false));
-        identificadorColumnas++;
+        do{
+            filaDeHeaders.add(new Cell(String.valueOf((char)identificadorColumnas), 2, false));
+            identificadorColumnas++;
+            activarScrollBars(true, false);
+        }while(filaDeHeaders.size()<= indiceLlegada);//Se add el número de cols nuevas en el encabezado...        
         
         for (int filaActual = 1; filaActual < listaDeListasCeldas.size(); filaActual++) {//< porque la fila de los headers de columnas no cuenta xD
-            listaDeListasCeldas.get(filaActual).add(new Cell("", 0, true));                        
+            for (int numeroColumnaACrear = 0; numeroColumnaACrear < numeroColumnasNuevas; numeroColumnaACrear++) {
+                listaDeListasCeldas.get(filaActual).add(new Cell("", 0, true));                 
+            }                       
         }
-    }        
+    }//Terminado        
     
-    private void deleteRow(){
-        listaDeListasCeldas.remove(listaDeListasCeldas.size()-1);    
+    private void deleteRow(int indiceLimite){
+        while((listaDeListasCeldas.size()-1)> indiceLimite){
+            listaDeListasCeldas.remove(listaDeListasCeldas.size()-1);    
         
-        identificadorFilas--;
-    }
+            identificadorFilas--;
+            activarScrollBars(false, true);
+        }        
+    }//Terminado
     
-    private void deleteColumn(){                               
+    private void deleteColumn(int indiceLimite){          
+        int numeroColumnasAEliminar = filaDeHeaders.size()-(1+indiceLimite);
+        
         for (int filaActual = 0; filaActual < listaDeListasCeldas.size(); filaActual++) {
-            listaDeListasCeldas.get(filaActual).remove(listaDeListasCeldas.get(filaActual).size()-1);            
-        }
-        
-        identificadorColumnas--;
-    }
+            for (int numeroColumnaAEliminar = 0; numeroColumnaAEliminar < numeroColumnasAEliminar; numeroColumnaAEliminar++) {
+                listaDeListasCeldas.get(filaActual).remove(listaDeListasCeldas.get(filaActual).size()-1);            
+                
+                if(filaActual==0){
+                    activarScrollBars(false, false);
+                    identificadorColumnas--;
+                }
+            }                                    
+        }                        
+    }//Terminado
     
     public void actualizarTabla(){
         contenedorTabla.removeAll();//solo que aquí tb se remueve el viewport... por eso es que baja 104 espacios en Y... lo que debería hacerse es un contenedorTabla.getViwePort.removeAll()
@@ -126,7 +139,7 @@ public class Table {
                 contenedorTabla.updateUI();
             }
         }                   
-    }
+    }//Terminado
     
     private void activarScrollBars(boolean esAumento, boolean enFilas){
         if(enFilas){
@@ -139,7 +152,7 @@ public class Table {
                 anchuraPanel += (esAumento)?+100:-100;
                 contenedorTabla.setPreferredSize(new Dimension(anchuraPanel, contenedorTabla.getHeight()));
             }            
-        }        
+        }//solo no se porqué no eliminan los scroll pane cuando llegan al número corresp.. habría que comparar con lo que se hace en List xD, quizá sea por el <, o quizá sea porque ya no se pueden eliminar :o, no creo porque en el list si se pudo xD        
     }
     
     
@@ -156,8 +169,7 @@ public class Table {
         }        
         
         return matrizDatos;
-    }
-    
+    }    
     
     //me imagino que aquí habrá que enviar los tipos de listener según el #header que sea...
 }

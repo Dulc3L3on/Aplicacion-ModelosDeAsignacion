@@ -31,15 +31,9 @@ public class List {
         inicializarContenedores();
     }
     
-    private void inicializarListas(int elementosIncialesFilas, int elementosInicialesColumnas){
-        
-        for (int elementoActual = 1; elementoActual <= elementosIncialesFilas; elementoActual++) {
-            addElemento("Candidato #" + elementoActual, false);
-        }
-        
-        for (int elementoActual = 1; elementoActual <= elementosInicialesColumnas; elementoActual++) {
-            addElemento("Asignación #" + elementoActual, true);
-        }                   
+    private void inicializarListas(int elementosIncialesFilas, int elementosInicialesColumnas){                
+            addElemento(false, elementosIncialesFilas);                        
+            addElemento(true, elementosInicialesColumnas);        
     }
     
     private void inicializarContenedores(){
@@ -47,28 +41,80 @@ public class List {
         actualizarElementosContenedor(false);
     }
     
-    public void cambiarTamanioLista(boolean esAumento, boolean esAsignacion){
+    public void cambiarTamanioLista(boolean esAumento, boolean esAsignacion, int cantidadReferencia){//si es de aumento, sería el # hasta el cual debería seguirse add, y si es de elo, correspondería al númeo a partir del cual se empezaría a eli...
         if(esAumento){
-           addElemento(((esAsignacion)?"Asignación":"Candidato") + " #"+((esAsignacion)?listadoAsignaciones.size()+1:identificadorFilas), esAsignacion);           
+           addElemento(esAsignacion, cantidadReferencia);           
         }else{
-            eliminarElemento(esAsignacion);
+            eliminarElemento(esAsignacion, cantidadReferencia);
         }               
         
-        ajustarScrollBars(esAsignacion, esAumento);
+        //ajustarScrollBars(esAsignacion, esAumento);
         actualizarElementosContenedor(esAsignacion);        
         System.out.println(contenedorListaAsignaciones.getSize());
     }
     
     
-    private void addElemento(String contenidoCampo, boolean esAsignacion){               
+    private void addElemento(boolean esAsignacion, int indiceLlegada){               
+        ArrayList<ElementList> listadoAuxiliar = (esAsignacion)?listadoAsignaciones:listadoCandidatos;
+        int indicePartida = 1+ ((esAsignacion)?listadoAsignaciones.size():listadoCandidatos.size());
+        System.out.println(indicePartida);
+        
+        for (int elementoActual = indicePartida; elementoActual <= indiceLlegada; elementoActual++) {
+            listadoAuxiliar.add(new ElementList((esAsignacion)?String.valueOf((char)identificadorColumnas):String.valueOf(identificadorFilas), ((esAsignacion)?"Asignación":"Candidato") + " #"+((esAsignacion)?listadoAsignaciones.size()+1:identificadorFilas)));
+            
+            if(esAsignacion){
+                identificadorColumnas++;
+            }else{
+                identificadorFilas++;
+            }
+            
+            ajustarScrollBars(esAsignacion, true);
+        }
+        
+        System.out.println("agregación -> "+ ((esAsignacion)?listadoAsignaciones.size():listadoCandidatos.size())+"\n");
+        
+        
+      /*UTIL pero solo para hacerlo de 1 en 1
         if(esAsignacion){                                        
             listadoAsignaciones.add(new ElementList(String.valueOf((char)identificadorColumnas), contenidoCampo));
             identificadorColumnas++;                                            
         }else{
             listadoCandidatos.add(new ElementList(String.valueOf(identificadorFilas), contenidoCampo));
             identificadorFilas++;
-        }               
-    }
+        }               */
+    }//Terminado
+    
+    private void eliminarElemento(boolean esDeAsignacion, int indiceLimite){//si te da tiempo, add el parám índice, para eliminar el que corresp...
+        ArrayList<ElementList> listadoAuxiliar = (esDeAsignacion)?listadoAsignaciones:listadoCandidatos;        
+        int indicePartida = (esDeAsignacion)?listadoAsignaciones.size():listadoCandidatos.size();
+        System.out.println(indiceLimite);
+        
+        while((--indicePartida)>= indiceLimite){
+            listadoAuxiliar.remove(indicePartida);
+            
+            if(esDeAsignacion){
+                identificadorColumnas--;
+            }else{
+                identificadorFilas--;
+            }
+            
+            ajustarScrollBars(esDeAsignacion, false);
+        }
+        
+        System.out.println("eliminación -> "+ ((esDeAsignacion)?listadoAsignaciones.size():listadoCandidatos.size())+"\n");
+        
+        /*UTIL pero solo para hacerlo de 1 en 1
+        if(esDeAsignacion){
+            listadoAsignaciones.remove(listadoAsignaciones.size()-1);
+            
+            //tendría que hacerse otro método para actualizar los elementos en el caso de la eliminación en cualquier parte, 
+            //puesto que en ese método se tendría que hacer la respectiva resta del identificador de la col o fila, según corresp...            
+            identificadorColumnas--;
+        }else{
+            listadoCandidatos.remove(listadoCandidatos.size()-1);                       
+            identificadorFilas--;
+        } */               
+    }//Terminado
     
     private void actualizarElementosContenedor(boolean actualizarAsignaciones){
         if(actualizarAsignaciones){
@@ -94,20 +140,7 @@ public class List {
             
             contenedorListaCandidatos.updateUI();
         }               
-    }
-    
-    private void eliminarElemento(boolean esDeAsignacion){//si te da tiempo, add el parám índice, para eliminar el que corresp...
-        if(esDeAsignacion){
-            listadoAsignaciones.remove(listadoAsignaciones.size()-1);
-            
-            //tendría que hacerse otro método para actualizar los elementos en el caso de la eliminación en cualquier parte, 
-            //puesto que en ese método se tendría que hacer la respectiva resta del identificador de la col o fila, según corresp...            
-            identificadorColumnas--;
-        }else{
-            listadoCandidatos.remove(listadoCandidatos.size()-1);                       
-            identificadorFilas--;
-        }                
-    }
+    }       
     
     private void ajustarScrollBars(boolean esAsignacion, boolean esAumento){
         if(esAsignacion){            

@@ -279,27 +279,31 @@ public class JPn_Paso1 extends javax.swing.JPanel {
     }//GEN-LAST:event_spn_numCandidatosInputMethodTextChanged
 
     private void updateColumComponents(){
-        if((Integer)spn_numAsignaciones.getValue() > cantidadAsignacionesPrevia){
-            manejadorTabla.cambiarTamanioTabla(true, false);
-            manejadorListas.cambiarTamanioLista(true, true);
+        int cantidadNueva = (Integer)spn_numAsignaciones.getValue();
+        
+        if(cantidadNueva > cantidadAsignacionesPrevia){
+            manejadorTabla.cambiarTamanioTabla(true, false, cantidadNueva);
+            manejadorListas.cambiarTamanioLista(true, true, cantidadNueva);
         }else{
-            manejadorTabla.cambiarTamanioTabla(false, false);
-            manejadorListas.cambiarTamanioLista(false, true);
+            manejadorTabla.cambiarTamanioTabla(false, false, cantidadNueva);
+            manejadorListas.cambiarTamanioLista(false, true, cantidadNueva);
         }       
 
-        cantidadAsignacionesPrevia = (Integer) spn_numAsignaciones.getValue();                
+        cantidadAsignacionesPrevia = cantidadNueva;                
     }
     
     private void updateRowComponents(){
-        if((Integer)spn_numCandidatos.getValue() > cantidadCandidatosPrevia){
-            manejadorTabla.cambiarTamanioTabla(true, true);
-            manejadorListas.cambiarTamanioLista(true, false);
+        int cantidadNueva = (Integer)spn_numCandidatos.getValue();
+        
+        if(cantidadNueva > cantidadCandidatosPrevia){
+            manejadorTabla.cambiarTamanioTabla(true, true, cantidadNueva);
+            manejadorListas.cambiarTamanioLista(true, false, cantidadNueva);
         }else{
-            manejadorTabla.cambiarTamanioTabla(false, true);
-            manejadorListas.cambiarTamanioLista(false, false);
+            manejadorTabla.cambiarTamanioTabla(false, true, cantidadNueva);
+            manejadorListas.cambiarTamanioLista(false, false, cantidadNueva);
         }       
 
-        cantidadCandidatosPrevia = (Integer) spn_numCandidatos.getValue();      
+        cantidadCandidatosPrevia = cantidadNueva;      
     }    
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
