@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dulceingenio.metodohungaro.parcial3_io.Backtend;
+package com.dulceingenio.metodohungaro.parcial3_io.InterfazManual;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -154,6 +154,26 @@ public class List {
                 contenedorListaCandidatos.setPreferredSize(new Dimension(contenedorListaCandidatos.getWidth(), alturaContenedorCandidatos));
             }//hay un pequeño bug con los tamaños, pero es de java :v o netbeans xD, porque tu tienes todo bien xD
         }       
+    }
+    
+    public String[] getListadoAsignaciones(){
+        String listadoNombresAsignaciones[] = new String[listadoAsignaciones.size()];
+        
+        for (int nombreActual = 0; nombreActual < listadoNombresAsignaciones.length; nombreActual++) {
+            listadoNombresAsignaciones[nombreActual] = listadoAsignaciones.get(nombreActual).getCampoNombre();
+        }
+        
+        return listadoNombresAsignaciones;
+    }
+    
+    public String[] getListadoCandidatos(){
+        String listadoNombresCandidatos[] = new String[listadoCandidatos.size()];
+        
+        for (int nombreActual = 0; nombreActual < listadoNombresCandidatos.length; nombreActual++) {
+            listadoNombresCandidatos[nombreActual] = listadoCandidatos.get(nombreActual).getCampoNombre();
+        }
+        
+        return listadoNombresCandidatos;
     }
     
 }

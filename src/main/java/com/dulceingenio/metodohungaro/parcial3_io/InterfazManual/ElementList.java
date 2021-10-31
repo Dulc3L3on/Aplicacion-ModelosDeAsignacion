@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dulceingenio.metodohungaro.parcial3_io.Backtend;
+package com.dulceingenio.metodohungaro.parcial3_io.InterfazManual;
 
 import java.awt.Color;
 import java.awt.Dimension;

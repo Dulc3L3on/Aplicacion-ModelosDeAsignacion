@@ -5,27 +5,33 @@
  */
 package com.dulceingenio.metodohungaro.parcial3_io;
 
-import com.dulceingenio.metodohungaro.parcial3_io.Backtend.List;
-import com.dulceingenio.metodohungaro.parcial3_io.Backtend.Table;
+import Backend.ManejadorReporte;
+import Backend.MetodoHungaro;
+import com.dulceingenio.metodohungaro.parcial3_io.InterfazManual.List;
+import com.dulceingenio.metodohungaro.parcial3_io.InterfazManual.Table;
 
 /**
  *
  * @author phily
  */
 public class JPn_Paso1 extends javax.swing.JPanel {
+    private MetodoHungaro metodoHungaro;
+    private ManejadorReporte manejadorReporte;
     private List manejadorListas;
-    private Table manejadorTabla;
+    private Table manejadorTabla;    
     private int cantidadAsignacionesPrevia = 2;
-    private int cantidadCandidatosPrevia = 2;
+    private int cantidadCandidatosPrevia = 2;        
     
     /**
      * Creates new form JPn_Paso1
      */
     public JPn_Paso1() {
-        initComponents();        
+        initComponents();                                   
         
         manejadorListas = new List(JP_listCandidatos, JP_listAsignaciones, 2, 2);        
-        manejadorTabla = new Table(jPn_contenedorTablaDatos, 2, 2);
+        manejadorTabla = new Table(jPn_contenedorTablaDatos, 2, 2, manejadorListas);                        
+        metodoHungaro = new MetodoHungaro();
+        manejadorReporte = new ManejadorReporte();
     }
 
     /**
@@ -211,6 +217,11 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         btn_descargar.setEnabled(false);
 
         btn_Calcular.setText("CALCULAR");
+        btn_Calcular.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_CalcularActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jP_panelContentLayout = new javax.swing.GroupLayout(jP_panelContent);
         jP_panelContent.setLayout(jP_panelContentLayout);
@@ -278,6 +289,14 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         updateRowComponents();
     }//GEN-LAST:event_spn_numCandidatosInputMethodTextChanged
 
+    private void btn_CalcularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_CalcularActionPerformed
+        if(btn_Calcular.getText().equals("Calcular")){
+            btn_Calcular.setText("Recalcular");
+        }
+        
+        appHungaroMetod();
+    }//GEN-LAST:event_btn_CalcularActionPerformed
+
     private void updateColumComponents(){
         int cantidadNueva = (Integer)spn_numAsignaciones.getValue();
         
@@ -305,6 +324,16 @@ public class JPn_Paso1 extends javax.swing.JPanel {
 
         cantidadCandidatosPrevia = cantidadNueva;      
     }    
+    
+    private void appHungaroMetod(){
+        double matrizDatos[][] = manejadorTabla.darInfo();
+        System.out.println((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")));
+        
+        if(matrizDatos!= null){            
+            manejadorReporte.mostrarReporte(txtF_nombreProyecto.getText(),metodoHungaro.hallarValorOptimo((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")), matrizDatos, manejadorTabla.getMayorDeLosDatos()),
+                    (String)cbBox_tipoOperacion.getSelectedItem(), txt_nombreTipoAsignacion.getText(), txt_nombreTipoCandidato.getText());
+        }
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel JP_listAsignaciones;

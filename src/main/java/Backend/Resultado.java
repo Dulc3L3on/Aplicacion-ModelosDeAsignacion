@@ -3,16 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dulceingenio.metodohungaro.parcial3_io;
-
-import javax.swing.JPopupMenu;
+package Backend;
 
 /**
  *
  * @author phily
  */
-public class PopUpMenu extends JPopupMenu{
-    
+public class Resultado {
+    private String nombreDelCandidato;
+    private String nombreDeLaAsignacion;
+    private double costo;
     
     
 }

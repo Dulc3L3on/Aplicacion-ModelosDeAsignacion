@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.dulceingenio.metodohungaro.parcial3_io.Backtend;
+package com.dulceingenio.metodohungaro.parcial3_io.InterfazManual;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -19,14 +20,17 @@ public class Table {
     private ArrayList<Cell> filaDeHeaders;
     private int identificadorFilas = 1;
     private int identificadorColumnas = 65;
-    private int anchuraPanel = 1334, alturaPanel = 842;
+    private int anchuraPanel = 1334, alturaPanel = 842;       
+    private List listado;    
+    private double elMayorDeLosDatos = 0;
     
-    public Table(JPanel elContenedorTabla, int numFilasIniciales, int numColumnasIniciales){//Aquí como en la lista, se inicializará la tabla; el tipo de dato de fila y columna no es ncesario colocarlo, para evitar un amontonamiento xD
+    public Table(JPanel elContenedorTabla, int numFilasIniciales, int numColumnasIniciales, List laLista){//Aquí como en la lista, se inicializará la tabla; el tipo de dato de fila y columna no es ncesario colocarlo, para evitar un amontonamiento xD
+        listado = laLista;
         contenedorTabla = elContenedorTabla;                
         listaDeListasCeldas = new ArrayList<>();
         
         filaDeHeaders = new ArrayList<>();
-        filaDeHeaders.add(new Cell("", 3, false));//se add la celda donde debería aparecer el tipo de datos que habrán en la tabla xD (pero para evitar redundancia no lo hará xD)        
+        filaDeHeaders.add(new Cell("", 3, false, null));//se add la celda donde debería aparecer el tipo de datos que habrán en la tabla xD (pero para evitar redundancia no lo hará xD)        
         
         listaDeListasCeldas.add(filaDeHeaders);//Se crear la fila en la que aparecerán los encabezados de columnas...                   
         
@@ -61,16 +65,16 @@ public class Table {
     }
     
     private void addRow(int indiceLlegada){            
-        System.out.println("agregación (tam inicial) -> "+ listaDeListasCeldas.size());
+        System.out.println("Fila nueva (#FilasAntiguas) -> "+ listaDeListasCeldas.size());
         
         do{
             ArrayList<Cell> nuevaFila = new ArrayList<>();
-            //Se add el header correspondiente de la nueva fila
-            nuevaFila.add(new Cell(String.valueOf(identificadorFilas), 1, false));        
+            //Se add el header correspondiente de la nueva fila                        
+            nuevaFila.add(new Cell(String.valueOf(identificadorFilas), 1, false, new HeaderTableListener(this, listado, "fila")));        
             identificadorFilas++;
             
             for (int celdaActual = 1; celdaActual < filaDeHeaders.size(); celdaActual++) {//< porque el primer ele de la fila es para el header de la misma
-                nuevaFila.add(new Cell("", 0, true));
+                nuevaFila.add(new Cell("", 0, true, null));
             }                        
         
             listaDeListasCeldas.add(nuevaFila);                            
@@ -81,18 +85,17 @@ public class Table {
     }//Terminado    
     
     private void addColumn(int indiceLlegada){        
-        int numeroColumnasNuevas = indiceLlegada -filaDeHeaders.size()+1;
+        int numeroColumnasNuevas = indiceLlegada -filaDeHeaders.size()+1;        
         
-        //se add el header correspondiente de la nueva columna
-        do{
-            filaDeHeaders.add(new Cell(String.valueOf((char)identificadorColumnas), 2, false));
+        do{//se add el header correspondiente de la nueva columna                                    
+            filaDeHeaders.add(new Cell(String.valueOf((char)identificadorColumnas), 2, false, new HeaderTableListener(this, listado, "columna")));
             identificadorColumnas++;
             activarScrollBars(true, false);
         }while(filaDeHeaders.size()<= indiceLlegada);//Se add el número de cols nuevas en el encabezado...        
         
         for (int filaActual = 1; filaActual < listaDeListasCeldas.size(); filaActual++) {//< porque la fila de los headers de columnas no cuenta xD
             for (int numeroColumnaACrear = 0; numeroColumnaACrear < numeroColumnasNuevas; numeroColumnaACrear++) {
-                listaDeListasCeldas.get(filaActual).add(new Cell("", 0, true));                 
+                listaDeListasCeldas.get(filaActual).add(new Cell("", 0, true, null));
             }                       
         }
     }//Terminado        
@@ -153,23 +156,39 @@ public class Table {
                 contenedorTabla.setPreferredSize(new Dimension(anchuraPanel, contenedorTabla.getHeight()));
             }            
         }//solo no se porqué no eliminan los scroll pane cuando llegan al número corresp.. habría que comparar con lo que se hace en List xD, quizá sea por el <, o quizá sea porque ya no se pueden eliminar :o, no creo porque en el list si se pudo xD        
+    }        
+    
+    public double[][] darInfo(){//la dará por lista, desde el primero al último ele de ella, excluyendo los headers... xD
+        double matrizDatos[][] = new double[listaDeListasCeldas.size()-1][filaDeHeaders.size()-1];//puesto que lo que corresp a los headers no cuenta...        
+        
+        try{//bien podrías haber utilizado un JFormattedTextField, pero al cb eso, debías hacer algo para que en los encabezados se admitieran strings y en las celdas de los datos solo doubles [para que así admitiera enteros y decimales [Es decir como el primer fragemento de ejemplo de chuils...]            
+            ArrayList<Cell> listaFilaActual;
+        
+            for (int filaActual = 0; filaActual < matrizDatos.length; filaActual++) {//empieza en 1, porque la fila 0 es la de los headers...
+                listaFilaActual = listaDeListasCeldas.get(filaActual+1);
+            
+                for (int columnaActual = 0; columnaActual < matrizDatos[0].length; columnaActual++) {//en la columna 1, porque la 0 de todas las filas de datos, tienen en esa col los headers de las filas...xD
+                    matrizDatos[filaActual][columnaActual] = Double.parseDouble(listaFilaActual.get(columnaActual+1).getInfoCelda());//no habrá problema puesto que se verificará que solo puedn ingresarse números..., sino encieroo esto en un try catch y listo xD
+                    elMayorDeLosDatos = (matrizDatos[filaActual][columnaActual]>elMayorDeLosDatos)?matrizDatos[filaActual][columnaActual]:elMayorDeLosDatos;//se busca el mayor, que será útil en caso de que la op sea maximiz, [hacer esto aquí ahorra tener que hacer dos for en el método de maxi de la clase MétodoHúngaro]
+                }
+            }                    
+        }catch(NumberFormatException e){
+            JOptionPane.showMessageDialog(null, "Solo puedes ingresar números (+/-)\nenteros y con decimales", "Datos erróneos", JOptionPane.ERROR_MESSAGE);        
+            matrizDatos = null;        
+        }                
+        
+        return matrizDatos;//hago esto porque la matriz no sería nula, puesto que ya le envié el número de espacios que debe tener...
+    }//Terminado [ya revisé y pienso que sí xD]            
+    
+    public ArrayList<ArrayList<Cell>> getMatriz(){
+        return listaDeListasCeldas;
     }
     
+    public ArrayList<Cell> getHeaders(){
+        return filaDeHeaders;
+    }          
     
-    public String[][] darInfo(){//la dará por lista, desde el primero al último ele de ella, excluyendo los headers... xD
-        String matrizDatos[][] = new String[listaDeListasCeldas.size()-1][filaDeHeaders.size()-1];//puesto que lo que corresp a los headers no cuenta...
-        ArrayList<Cell> listaFilaActual;
-        
-        for (int filaActual = 0; filaActual < matrizDatos.length; filaActual++) {
-            listaFilaActual = listaDeListasCeldas.get(filaActual);
-            
-            for (int columnaActual = 0; columnaActual < matrizDatos[0].length; columnaActual++) {
-                matrizDatos[filaActual][columnaActual] = listaFilaActual.get(columnaActual).getDato();
-            }
-        }        
-        
-        return matrizDatos;
+    public double getMayorDeLosDatos(){//útil para la maximiz...
+        return elMayorDeLosDatos;
     }    
-    
-    //me imagino que aquí habrá que enviar los tipos de listener según el #header que sea...
 }
