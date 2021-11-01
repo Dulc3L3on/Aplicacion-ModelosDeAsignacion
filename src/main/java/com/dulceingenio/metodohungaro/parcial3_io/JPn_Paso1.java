@@ -6,6 +6,7 @@
 package com.dulceingenio.metodohungaro.parcial3_io;
 
 import Backend.ManejadorReporte;
+import Backend.ManejadorResultado;
 import Backend.MetodoHungaro;
 import com.dulceingenio.metodohungaro.parcial3_io.InterfazManual.List;
 import com.dulceingenio.metodohungaro.parcial3_io.InterfazManual.Table;
@@ -17,6 +18,7 @@ import com.dulceingenio.metodohungaro.parcial3_io.InterfazManual.Table;
 public class JPn_Paso1 extends javax.swing.JPanel {
     private MetodoHungaro metodoHungaro;
     private ManejadorReporte manejadorReporte;
+    private ManejadorResultado manejadorResultado;
     private List manejadorListas;
     private Table manejadorTabla;    
     private int cantidadAsignacionesPrevia = 2;
@@ -32,6 +34,7 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         manejadorTabla = new Table(jPn_contenedorTablaDatos, 2, 2, manejadorListas);                        
         metodoHungaro = new MetodoHungaro();
         manejadorReporte = new ManejadorReporte();
+        manejadorResultado = new ManejadorResultado();
     }
 
     /**
@@ -330,7 +333,8 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         System.out.println((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")));
         
         if(matrizDatos!= null){            
-            manejadorReporte.mostrarReporte(txtF_nombreProyecto.getText(),metodoHungaro.hallarValorOptimo((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")), matrizDatos, manejadorTabla.getMayorDeLosDatos()),
+            manejadorReporte.mostrarReporte(txtF_nombreProyecto.getText(), 
+                    manejadorResultado.formarListaDeResultados(manejadorListas.getListadoAsignaciones(), manejadorListas.getListadoCandidatos(), metodoHungaro.hallarValorOptimo((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")), matrizDatos, manejadorTabla.getMayorDeLosDatos()), metodoHungaro.getUbicacionCerosOptimos()),
                     (String)cbBox_tipoOperacion.getSelectedItem(), txt_nombreTipoAsignacion.getText(), txt_nombreTipoCandidato.getText());
         }
     }

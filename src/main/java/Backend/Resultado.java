@@ -14,5 +14,27 @@ public class Resultado {
     private String nombreDeLaAsignacion;
     private double costo;
     
+    public void setNombreDelCandidato(String nombreDelCandidato) {
+        this.nombreDelCandidato = nombreDelCandidato;
+    }   
+
+    public void setNombreDeLaAsignacion(String nombreDeLaAsignacion) {
+        this.nombreDeLaAsignacion = nombreDeLaAsignacion;
+    }
     
+    public void setCosto(double costo) {
+        this.costo = costo;
+    }           
+
+    public String getNombreDeLaAsignacion() {
+        return nombreDeLaAsignacion;
+    }
+    
+    public String getNombreDelCandidato() {
+        return nombreDelCandidato;
+    }
+    
+    public double getCosto() {
+        return costo;
+    }    
 }
