@@ -160,6 +160,8 @@ public class Table {
     
     public double[][] darInfo(){//la dará por lista, desde el primero al último ele de ella, excluyendo los headers... xD
         double matrizDatos[][] = new double[listaDeListasCeldas.size()-1][filaDeHeaders.size()-1];//puesto que lo que corresp a los headers no cuenta...                
+        elMinimoDeLosDatos = 0;
+        elMayorDeLosDatos = 0;
         
         try{//bien podrías haber utilizado un JFormattedTextField, pero al cb eso, debías hacer algo para que en los encabezados se admitieran strings y en las celdas de los datos solo doubles [para que así admitiera enteros y decimales [Es decir como el primer fragemento de ejemplo de chuils...]            
             ArrayList<Cell> listaFilaActual;

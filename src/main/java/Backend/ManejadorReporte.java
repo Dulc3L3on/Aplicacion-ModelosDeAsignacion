@@ -5,7 +5,6 @@
  */
 package Backend;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +33,7 @@ public class ManejadorReporte {
              //File file = new File(this.getClass().getResource("/MejorAsignacion-MetodoHungaro.jrxml").getPath());                       
             //JasperReport jasperReports = JasperCompileManager.compileReport(file.getAbsolutePath());
             
-            JasperReport jasperReports = JasperCompileManager.compileReport("archivo/MejorAsignacion-MetodoHungaro.jrxml");            
+            JasperReport jasperReports = JasperCompileManager.compileReport("src/main/resources/archivo/MejorAsignacion-MetodoHungaro.jrxml");            
             
             //Creas el objeto que te permite enviar el listado y utilizar los métodos para obtener la info
             JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(resultadoMejorAsignacion);

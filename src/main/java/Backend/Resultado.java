@@ -28,7 +28,7 @@ public class Resultado {
         return nombreDelCandidato;
     }
     
-    public double getCosto() {
+    public double getTipoDeDato() {
         return tipoDeDato;
     }    
 }

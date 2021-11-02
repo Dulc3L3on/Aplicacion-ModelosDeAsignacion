@@ -343,7 +343,7 @@ public class JPn_Paso1 extends javax.swing.JPanel {
     
     private void appHungaroMetod(){
         double matrizDatos[][] = manejadorTabla.darInfo();
-        System.out.println((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")));
+        System.out.println("Es maximiz? "+(((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")));
         
         if(matrizDatos!= null){            
             manejadorReporte.mostrarReporte(txtF_nombreProyecto.getText(), 
