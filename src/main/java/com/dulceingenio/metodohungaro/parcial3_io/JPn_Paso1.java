@@ -62,6 +62,7 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         txtF_nombreProyecto = new javax.swing.JTextField();
         btn_descargar = new javax.swing.JButton();
         btn_Calcular = new javax.swing.JButton();
+        txtF_nombreTipoDatos = new javax.swing.JTextField();
 
         setMaximumSize(new java.awt.Dimension(1782, 761));
         setPreferredSize(new java.awt.Dimension(1782, 761));
@@ -226,6 +227,9 @@ public class JPn_Paso1 extends javax.swing.JPanel {
             }
         });
 
+        txtF_nombreTipoDatos.setFont(new java.awt.Font("Ubuntu", 0, 17)); // NOI18N
+        txtF_nombreTipoDatos.setText("TIpo de datos de la tabla");
+
         javax.swing.GroupLayout jP_panelContentLayout = new javax.swing.GroupLayout(jP_panelContent);
         jP_panelContent.setLayout(jP_panelContentLayout);
         jP_panelContentLayout.setHorizontalGroup(
@@ -233,14 +237,21 @@ public class JPn_Paso1 extends javax.swing.JPanel {
             .addGroup(jP_panelContentLayout.createSequentialGroup()
                 .addGap(31, 31, 31)
                 .addGroup(jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(cbBox_tipoOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtF_nombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(scrollPane_TablaDatos))
-                .addGap(35, 35, 35)
-                .addGroup(jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btn_Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btn_descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(32, 32, 32))
+                    .addGroup(jP_panelContentLayout.createSequentialGroup()
+                        .addComponent(txtF_nombreTipoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jP_panelContentLayout.createSequentialGroup()
+                        .addGroup(jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jP_panelContentLayout.createSequentialGroup()
+                                .addComponent(txtF_nombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(cbBox_tipoOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, 208, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(scrollPane_TablaDatos))
+                        .addGap(35, 35, 35)
+                        .addGroup(jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(btn_Calcular, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btn_descargar, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(32, 32, 32))))
         );
         jP_panelContentLayout.setVerticalGroup(
             jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,11 +263,13 @@ public class JPn_Paso1 extends javax.swing.JPanel {
                 .addGap(30, 30, 30))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jP_panelContentLayout.createSequentialGroup()
                 .addGap(23, 23, 23)
-                .addComponent(txtF_nombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(21, 21, 21)
-                .addComponent(cbBox_tipoOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jP_panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtF_nombreProyecto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(cbBox_tipoOperacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(scrollPane_TablaDatos)
+                .addComponent(txtF_nombreTipoDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
+                .addComponent(scrollPane_TablaDatos, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                 .addGap(28, 28, 28))
         );
 
@@ -334,8 +347,8 @@ public class JPn_Paso1 extends javax.swing.JPanel {
         
         if(matrizDatos!= null){            
             manejadorReporte.mostrarReporte(txtF_nombreProyecto.getText(), 
-                    manejadorResultado.formarListaDeResultados(manejadorListas.getListadoAsignaciones(), manejadorListas.getListadoCandidatos(), metodoHungaro.hallarValorOptimo((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")), matrizDatos, manejadorTabla.getMayorDeLosDatos()), metodoHungaro.getUbicacionCerosOptimos()),
-                    (String)cbBox_tipoOperacion.getSelectedItem(), txt_nombreTipoAsignacion.getText(), txt_nombreTipoCandidato.getText());
+                    manejadorResultado.formarListaDeResultados(manejadorListas.getListadoAsignaciones(), manejadorListas.getListadoCandidatos(), metodoHungaro.hallarValorOptimo((((String)cbBox_tipoOperacion.getSelectedItem()).equals("Maximización")), matrizDatos, manejadorTabla.getMayorDeLosDatos()), metodoHungaro.getMatrizDatosOriginal()),
+                    (String)cbBox_tipoOperacion.getSelectedItem(), txt_nombreTipoAsignacion.getText(), txt_nombreTipoCandidato.getText(), txtF_nombreTipoDatos.getText());
         }
     }
     
@@ -354,6 +367,7 @@ public class JPn_Paso1 extends javax.swing.JPanel {
     private javax.swing.JSpinner spn_numAsignaciones;
     private javax.swing.JSpinner spn_numCandidatos;
     private javax.swing.JTextField txtF_nombreProyecto;
+    private javax.swing.JTextField txtF_nombreTipoDatos;
     private javax.swing.JTextField txt_nombreTipoAsignacion;
     private javax.swing.JTextField txt_nombreTipoCandidato;
     // End of variables declaration//GEN-END:variables

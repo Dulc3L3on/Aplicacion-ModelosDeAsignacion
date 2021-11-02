@@ -10,21 +10,15 @@ package Backend;
  * @author phily
  */
 public class Resultado {
-    private String nombreDelCandidato;
-    private String nombreDeLaAsignacion;
-    private double costo;
+    private final String nombreDelCandidato;
+    private final String nombreDeLaAsignacion;
+    private final double tipoDeDato;
     
-    public void setNombreDelCandidato(String nombreDelCandidato) {
-        this.nombreDelCandidato = nombreDelCandidato;
+    public Resultado(String elNombreDelCandidato, String elNombreDeAsignacion, double elTipo){
+        nombreDelCandidato = elNombreDelCandidato;
+        nombreDeLaAsignacion = elNombreDeAsignacion;
+        tipoDeDato = elTipo;
     }   
-
-    public void setNombreDeLaAsignacion(String nombreDeLaAsignacion) {
-        this.nombreDeLaAsignacion = nombreDeLaAsignacion;
-    }
-    
-    public void setCosto(double costo) {
-        this.costo = costo;
-    }           
 
     public String getNombreDeLaAsignacion() {
         return nombreDeLaAsignacion;
@@ -35,6 +29,6 @@ public class Resultado {
     }
     
     public double getCosto() {
-        return costo;
+        return tipoDeDato;
     }    
 }

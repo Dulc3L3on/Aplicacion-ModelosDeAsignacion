@@ -14,14 +14,19 @@ import java.util.ArrayList;
 public class ManejadorResultado {   
     
     public ArrayList<Resultado> formarListaDeResultados(String[] listadoNombresAsignaciones, 
-        String[] listadoNombreCandidatos, double [][] matrizDeDatosFinales, int[] ubicacionCerosOptimos){
+        String[] listadoNombreCandidatos, int[] ubicacionCerosOptimos, double [][] matrizDeDatosOriginales){//recuerda que el dato almacenado en el arr ubiCerosOpt es la fila y el índice la col
             
         ArrayList<Resultado> listadoResultados = null;
         
-        if(matrizDeDatosFinales!= null){
+        if(ubicacionCerosOptimos!= null){
             listadoResultados = new ArrayList<>();
             
-            //Aquí la lógica para incorporar los datos a la lista de resultados...
+            for (int columnaActual = 0; columnaActual < ubicacionCerosOptimos.length; columnaActual++) {
+                listadoResultados.add(new Resultado((ubicacionCerosOptimos[columnaActual]<listadoNombreCandidatos.length)?listadoNombreCandidatos[ubicacionCerosOptimos[columnaActual]]:"Candidato Ficticio",
+                    (columnaActual<listadoNombresAsignaciones.length)?listadoNombresAsignaciones[columnaActual]:"Tarea Ficticia",
+                    (ubicacionCerosOptimos[columnaActual]<matrizDeDatosOriginales.length && columnaActual<matrizDeDatosOriginales[0].length)
+                            ?matrizDeDatosOriginales[ubicacionCerosOptimos[columnaActual]][columnaActual]:0));                                
+            }                        
         }                                        
         return listadoResultados;
     }

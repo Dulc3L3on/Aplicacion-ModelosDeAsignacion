@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.17.0.final using JasperReports Library version 6.17.0-6d93193241dd8cc42629e188b94f9e0bc5722efd  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="MejorAsignacion-MetodoHungaro" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="fa50688c-6d2e-482a-a0b2-8c2df10baccd">
+	<parameter name="ProjectName" class="java.lang.String"/>
+	<parameter name="nombreTipoCandidato" class="java.lang.String"/>
+	<parameter name="nombreTipoAsignacion" class="java.lang.String"/>
+	<parameter name="dataType" class="java.lang.String"/>
+	<parameter name="tipoOperacion" class="java.lang.String"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="nombreDelCandidato" class="java.lang.String"/>
+	<field name="nombreDeLaAsignacion" class="java.lang.String"/>
+	<field name="tipoDeDato" class="java.lang.Double"/>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="72">
+			<frame>
+				<reportElement mode="Opaque" x="-20" y="-20" width="595" height="92" backcolor="#9D7DAD" uuid="763ec105-1c03-457e-b4d9-01404a334b03"/>
+				<staticText>
+					<reportElement mode="Transparent" x="20" y="20" width="555" height="60" forecolor="#FFFFFF" backcolor="#8660A6" uuid="8ca4f413-b3ba-4f33-8c0c-f0ee97bd5bb3"/>
+					<textElement textAlignment="Center">
+						<font fontName="Waree" size="30" isBold="true"/>
+					</textElement>
+					<text><![CDATA[Mejor Asignación]]></text>
+				</staticText>
+			</frame>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="55">
+			<staticText>
+				<reportElement x="0" y="10" width="110" height="20" uuid="6f5cf20b-9666-4b9d-a83a-205df0d29bf4"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Nombre proyecto: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="110" y="10" width="370" height="20" uuid="03d87d3d-9a2f-4ace-8b2a-dafb32f92191"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ProjectName}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="35" width="60" height="20" uuid="7081c417-2812-4bbf-a8eb-d10492d82ba5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Objetivo: ]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="60" y="35" width="180" height="20" uuid="0baa16d5-1875-4aa6-b8e7-3c557a10c9b5"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari" size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{tipoOperacion}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="42">
+			<line>
+				<reportElement x="-20" y="10" width="595" height="1" forecolor="#666666" uuid="c83f73cd-6e98-4fa1-a5e4-b07f6d2745da"/>
+			</line>
+			<staticText>
+				<reportElement x="0" y="12" width="50" height="20" uuid="8ebf6843-ed3f-4eed-9b8b-99eac05e42e1"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari" isBold="true"/>
+				</textElement>
+				<text><![CDATA[No.
+]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="50" y="12" width="200" height="20" uuid="92812609-ffe0-4e1d-9577-fcb3ff2e2547"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Manjari" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreTipoCandidato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="12" width="200" height="20" uuid="9b1736a3-b7c4-4e28-ad67-7ff9f0aa8d47">
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Manjari" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{nombreTipoAsignacion}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="450" y="22" width="105" height="20" uuid="353a4c09-c6cb-4a80-92b7-365a79a04ac7">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f3eead6-e6e5-45fe-86db-87f139767a78"/>
+					<property name="com.jaspersoft.studio.unit.height" value="px"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Manjari" isBold="true"/>
+				</textElement>
+				<text><![CDATA[]]></text>
+			</staticText>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="-20" y="34" width="595" height="1" uuid="dc8000ce-fb8a-45a8-acfe-9f09927d1255"/>
+			</line>
+			<textField>
+				<reportElement x="451" y="13" width="104" height="20" uuid="78dea867-141a-488b-b190-ec4825889edd"/>
+				<textFieldExpression><![CDATA[$P{dataType}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="26">
+			<textField>
+				<reportElement x="450" y="1" width="105" height="22" uuid="79761f16-36a1-46ba-8382-775147a12f02">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="9f3eead6-e6e5-45fe-86db-87f139767a78"/>
+				</reportElement>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font fontName="Manjari"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tipoDeDato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="50" y="1" width="200" height="22" uuid="1da05175-53d5-404e-ae83-8813ec632d1c">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="52dce26e-62e0-4efc-8840-5bdd69f89df2"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nombreDelCandidato}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="1" width="200" height="22" uuid="cc336c2f-db24-4a56-9fc0-2d8fa0f87b6b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7df11727-303b-46b1-a531-3a28f3f558b1"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nombreDeLaAsignacion}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement mode="Opaque" x="0" y="1" width="35" height="22" backcolor="#C6BBC7" uuid="ca38db14-7732-47aa-9d22-aa6490c20675">
+					<property name="com.jaspersoft.studio.unit.width" value="px"/>
+				</reportElement>
+				<textElement verticalAlignment="Middle">
+					<font fontName="Manjari"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$V{COLUMN_NUMBER}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="17">
+			<textField>
+				<reportElement mode="Opaque" x="0" y="4" width="515" height="13" backcolor="#E6E6E6" uuid="1a879371-1a74-4f59-b98a-293f623f7495"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="515" y="4" width="40" height="13" backcolor="#E6E6E6" uuid="374a64f6-7afd-4df7-a4a5-a14fa346f016"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="0" y="4" width="100" height="13" uuid="593d003f-dab5-486f-9bee-9d6e09b7cb9b"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

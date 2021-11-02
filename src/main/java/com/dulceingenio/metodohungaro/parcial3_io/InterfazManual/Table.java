@@ -22,7 +22,7 @@ public class Table {
     private int identificadorColumnas = 65;
     private int anchuraPanel = 1334, alturaPanel = 842;       
     private List listado;    
-    private double elMayorDeLosDatos = 0;
+    private double elMayorDeLosDatos = 0, elMinimoDeLosDatos=0;//esto último por los números negativos...
     
     public Table(JPanel elContenedorTabla, int numFilasIniciales, int numColumnasIniciales, List laLista){//Aquí como en la lista, se inicializará la tabla; el tipo de dato de fila y columna no es ncesario colocarlo, para evitar un amontonamiento xD
         listado = laLista;
@@ -159,7 +159,7 @@ public class Table {
     }        
     
     public double[][] darInfo(){//la dará por lista, desde el primero al último ele de ella, excluyendo los headers... xD
-        double matrizDatos[][] = new double[listaDeListasCeldas.size()-1][filaDeHeaders.size()-1];//puesto que lo que corresp a los headers no cuenta...        
+        double matrizDatos[][] = new double[listaDeListasCeldas.size()-1][filaDeHeaders.size()-1];//puesto que lo que corresp a los headers no cuenta...                
         
         try{//bien podrías haber utilizado un JFormattedTextField, pero al cb eso, debías hacer algo para que en los encabezados se admitieran strings y en las celdas de los datos solo doubles [para que así admitiera enteros y decimales [Es decir como el primer fragemento de ejemplo de chuils...]            
             ArrayList<Cell> listaFilaActual;
@@ -170,12 +170,17 @@ public class Table {
                 for (int columnaActual = 0; columnaActual < matrizDatos[0].length; columnaActual++) {//en la columna 1, porque la 0 de todas las filas de datos, tienen en esa col los headers de las filas...xD
                     matrizDatos[filaActual][columnaActual] = Double.parseDouble(listaFilaActual.get(columnaActual+1).getInfoCelda());//no habrá problema puesto que se verificará que solo puedn ingresarse números..., sino encieroo esto en un try catch y listo xD
                     elMayorDeLosDatos = (matrizDatos[filaActual][columnaActual]>elMayorDeLosDatos)?matrizDatos[filaActual][columnaActual]:elMayorDeLosDatos;//se busca el mayor, que será útil en caso de que la op sea maximiz, [hacer esto aquí ahorra tener que hacer dos for en el método de maxi de la clase MétodoHúngaro]
+                    elMinimoDeLosDatos = (matrizDatos[filaActual][columnaActual]<elMinimoDeLosDatos)?matrizDatos[filaActual][columnaActual]:elMinimoDeLosDatos;
                 }
             }                    
         }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(null, "Solo puedes ingresar números (+/-)\nenteros y con decimales", "Datos erróneos", JOptionPane.ERROR_MESSAGE);        
-            matrizDatos = null;        
+            JOptionPane.showMessageDialog(null, "Solo se aceptan números positivos"+((elMinimoDeLosDatos<0)?"(+)":"")+"\nenteros y con decimales", "Datos erróneos", JOptionPane.ERROR_MESSAGE);                    
+            return null;
         }                
+        
+        if(elMinimoDeLosDatos<0){
+            JOptionPane.showMessageDialog(null, "Solo se aceptan números positivos (+)", "Datos negativos", JOptionPane.ERROR_MESSAGE);
+        }
         
         return matrizDatos;//hago esto porque la matriz no sería nula, puesto que ya le envié el número de espacios que debe tener...
     }//Terminado [ya revisé y pienso que sí xD]            
@@ -191,4 +196,8 @@ public class Table {
     public double getMayorDeLosDatos(){//útil para la maximiz...
         return elMayorDeLosDatos;
     }    
+    
+    public double getMenorDeLosDatos(){//esto por los datos negativos!!! de no permitirse agregarás un if en el método dar info que si es < 0 este dato envíe null y muestre el JOptionPane informando el hecho xD
+        return elMinimoDeLosDatos;
+    }
 }
