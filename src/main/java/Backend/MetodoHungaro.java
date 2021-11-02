@@ -5,6 +5,8 @@
  */
 package Backend;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author phily
@@ -61,22 +63,15 @@ public class MetodoHungaro {
         return hallarCeros(matrizDeDatos);//se devulve la matriz con los datos finales [es decir la que contiene los 0's óptimos y los demás datos no óptimos xD]     
     }//arreglado, más que todo por la reducción de las fils y cols...
     
-    private double [][] hallarMinimosDatos(double[][] minimosDatos, int ubicacionDato, double[][] matrizDeDatos){//ubicadionDato es decir, fila[0] o col[1]
-        int filaActual[] = new int[2];
-        int columnaActual[] = new int[2];//0-> filaActualElementoRevisiónAnterior, 1-> elementoRevisionSiguiente
-        
-        for (int ubicacionFijaActual = 0; ubicacionFijaActual < matrizDeDatos.length; ubicacionFijaActual++) {//esta ubicación se referirá a la fila o col actual de revisión, según corresponda al tipo de ubicacionDato que se esté revisacndo (fila/col)
-            for (int ubicacionMovilActual = 1; ubicacionMovilActual < matrizDeDatos.length; ubicacionMovilActual++) {//puesto que la matriz es cuadrada, puesde usarse de igual manera matrizDatos.lenght...                
-                filaActual[0] = (ubicacionDato==0)?ubicacionFijaActual:(ubicacionMovilActual-1);
-                columnaActual[0] = (ubicacionDato==0)?ubicacionMovilActual-1:ubicacionFijaActual;
-                filaActual[1] = (ubicacionDato==0)?ubicacionFijaActual:ubicacionMovilActual;
-                columnaActual[1] = (ubicacionDato==0)?ubicacionMovilActual:ubicacionFijaActual;
-                
-                minimosDatos[ubicacionDato][ubicacionFijaActual] = 
-                        ((matrizDeDatos[filaActual[0]][columnaActual[0]] < matrizDeDatos[filaActual[1]][columnaActual[1]]))?matrizDeDatos[filaActual[0]][columnaActual[0]]:matrizDeDatos[filaActual[1]][columnaActual[1]];
-            }            
+    private double [][] hallarMinimosDatos(double[][] minimosDatos, int ubicacionDato, double[][] matrizDeDatos){//ubicadionDato es decir, fila[0] o col[1]                
+        for (int filaActual = 0; filaActual < matrizDeDatos.length; filaActual++) {//esta ubicación se referirá a la fila o col actual de revisión, según corresponda al tipo de ubicacionDato que se esté revisacndo (fila/col)
+            for (int columnaActual = 0; columnaActual < matrizDeDatos.length; columnaActual++) {//puesto que la matriz es cuadrada, puesde usarse de igual manera matrizDatos.lenght...                              
+                minimosDatos[ubicacionDato][(ubicacionDato==0)?filaActual:columnaActual] = 
+                     (((ubicacionDato==0)?columnaActual:filaActual)==0 || matrizDeDatos[filaActual][columnaActual] < minimosDatos[ubicacionDato][(ubicacionDato==0)?filaActual:columnaActual])?
+                        matrizDeDatos[filaActual][columnaActual]:minimosDatos[ubicacionDato][(ubicacionDato==0)?filaActual:columnaActual];//Creo que aplica lo mismo aunque sean negativos... creo :v xD            }            
+            }
         }        
-        return minimosDatos;        
+        return minimosDatos;                         
     }//Terminado y arreglado, no se puede hallar los míns datos a la vez, debe ser 1ro fils y luego el de las cols...
     
     //paso 1 y 2 después del previo
@@ -88,7 +83,62 @@ public class MetodoHungaro {
         }        
         return matrizDeDatos;
     }//Terminado y arreglado [no se puede hacer las restas de ambos tipos de minimos a la vez...
-
+    
+   /* private ArrayList<ArrayList<Integer>> getUbicacionesCeros(double[][] matrizDeDatos){
+        ArrayList<ArrayList<Integer>> ubicacionDeCeros = new ArrayList<>();
+        
+        for (int columnaActual = 0; columnaActual < matrizDeDatos[0].length; columnaActual++) {
+            ubicacionDeCeros.add(new ArrayList<>());//se add una columna...
+            for (int filaActual = 0; filaActual < matrizDeDatos.length; filaActual++) {
+                if(matrizDeDatos[filaActual][columnaActual]==0){
+                    ubicacionDeCeros.get(columnaActual).add(filaActual);//se agrega la fila en donde se hallo el 0
+                }                
+            }            
+        }
+        return ubicacionDeCeros;
+    }
+    
+    private void ubicarCeros(double[][] matrizDeDatos){
+        filaCoincidencia = new int[matrizDeDatos.length];//cada índice es una col y el valor de cada celda la fila de coincidencia...
+        
+        ArrayList<ArrayList<Integer>> listadoUbicaciones = getUbicacionesCeros(matrizDeDatos);
+        ArrayList<Integer> listadoAuxiliarColumna;
+        
+        for (int columnaActual = 0; columnaActual < listadoUbicaciones.size(); columnaActual++) {
+            listadoAuxiliarColumna = listadoUbicaciones.get(columnaActual);
+            
+            for (int indiceCeroActual = 0; indiceCeroActual < listadoAuxiliarColumna.size(); indiceCeroActual++) {
+                if(buscarCoincidencia(columnaActual, listadoAuxiliarColumna.get(indiceCeroActual), filaCoincidencia)==false){
+                        filaCoincidencia[columnaActual] = listadoAuxiliarColumna.get(indiceCeroActual);
+                        break;//para parar este for interno y seguir a la siguiente columna... si no funciona solo establece el valor de filaActual = al número de cols totales, para evitar entrar en el else y seguir con la sig colum xD
+                }
+                
+            }
+        }
+    
+    }
+    
+    private boolean buscarCeroAlternativo(ArrayList<ArrayList<Integer>> listadoColumnas, ArrayList<Integer> listadoFilasOptimasDeLaColumna, int columnaConProblema){        
+        int columnaRevision;
+        
+        for (int elementoRevisionActual = 0; elementoRevisionActual < listadoFilasOptimasDeLaColumna.size(); elementoRevisionActual++) {
+            columnaRevision = tools.getIndiceCoincidencia(filaCoincidencia, listadoFilasOptimasDeLaColumna.get(elementoRevisionActual));
+            
+            ArrayList<Integer> columnaChocante = listadoColumnas.get(columnaRevision);
+            
+            for (int filaCeroActual = 0; filaCeroActual < columnaChocante.size(); filaCeroActual++) {
+                if(!buscarCoincidencia(columnaRevision, listadoFilasOptimasDeLaColumna.get(elementoRevisionActual), filaCoincidencia)){
+                    filaCoincidencia[columnaRevision] = 
+                }
+                
+            }
+        }
+        
+        return false;
+    }*/
+    
+    
+    
     //paso #4
     private int[] hallarCeros(double [][] matrizDeDatos){                        
         filaCoincidencia = new int[matrizDeDatos.length];//Aquí se almacenan los números de las filas en las que se encontró 0 en cada col [las col corresp a cada índice... de esa forma se verifica si ya existe o no un 0 en esa fila, lo cual indica si existe o no algomeración...]
@@ -178,19 +228,21 @@ public class MetodoHungaro {
     }//Terminado! uwu xD
     
     private double hallarMenorDeNoTachados(double[][] matrizDatos, boolean[][] listadoDeTachones){
-        double menorDato=-1;//Puesto que no se admiten valores negativos y el alogritmo del método Húngaro (teoría) hace las reducciones de tal forma que no queden valores (-)
+        double menorDato = 0, numeroElementoNoTachado =0;
         
         for (int filaActual = 0; filaActual < matrizDatos.length; filaActual++) {
             if(!listadoDeTachones[0][filaActual]){//0 porque quieres revisar los datos referentes a las filas, en el indice = al valor de la filaActual...
                 for (int columnaActual = 0; columnaActual < matrizDatos[0].length; columnaActual++) {
                     if(!listadoDeTachones[1][columnaActual]){
-                        menorDato = (matrizDatos[filaActual][columnaActual]<menorDato)?matrizDatos[filaActual][columnaActual]:menorDato;                            
+                        numeroElementoNoTachado++;
+                        
+                        menorDato = ((numeroElementoNoTachado==1) || matrizDatos[filaActual][columnaActual]<menorDato)?matrizDatos[filaActual][columnaActual]:menorDato;                            
                     }                        
                 }                    
             }
         }
         return menorDato;        
-    }//Terminado y arreglado, el dato de menorDato debe ser uno que no puedan tener cualquiera de las celdas, en este caso un val (-)
+    }//Terminado y arreglado, la var de menor dato debe setearse con el primer valor de los datos no tachados, para proceder a comparar correctamente xD
     
     public double [][] getMatrizDatosOriginal(){
         return matrizDatosOriginal;

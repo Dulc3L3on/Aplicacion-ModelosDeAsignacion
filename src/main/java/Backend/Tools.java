@@ -20,4 +20,13 @@ public class Tools{
         return matriz;
     }
     
+    public int getIndiceCoincidencia(int[] listadoFilasCoincidencia, int dato){
+        for (int indiceActual = 0; indiceActual < listadoFilasCoincidencia.length; indiceActual++) {
+            if(listadoFilasCoincidencia[indiceActual] == dato){
+                return indiceActual;            
+            }
+        }
+        return -1;//pero como yo soy quine manda los datos, siempre devovlerá el indice en el que se encuentra el elemento...
+    }
+    
 }
